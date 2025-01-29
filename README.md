@@ -1,4 +1,4 @@
-# Aurora - Mood-Based Spotify Song Recommendation App
+# Aurora - Mood-Based Spotify Song Recommendation
 
 Aurora is a Next.js-powered app designed to match your mood with the perfect songs. Whether you're feeling energetic, nostalgic, relaxed, or inspired, Aurora curates a personalized playlist just for you.
 
