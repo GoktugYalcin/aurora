@@ -75,10 +75,12 @@ export default function Home() {
               containerRef={containerRef}
             />
           </span>
-          <div className="flex justify-center items-center pt-20 flex-col w-full gap-6">
+          <div className="flex justify-center items-center pt-20 flex-col w-full gap-2">
             <h2 className="text-2xl font-bold text-center">
-              Let Aurora be your personal DJ. Start your journey through sound
-              today.
+              Let Aurora be your personal DJ.
+            </h2>
+            <h2 className="text-2xl font-bold text-center mb-6">
+              Start your journey through sound today.
             </h2>
             <Link
               href={"/suggest"}
