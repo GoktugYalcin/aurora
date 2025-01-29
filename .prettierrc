@@ -6,6 +6,5 @@
   "semi": true,
   "importOrder": ["<THIRD_PARTY_MODULES>", "^@/components/stages/(.*)$", "^@/components/(.*)$", "^@/hooks/(.*)$", "^@/lib/(.*)$", "^@/store/(.*)$", "^[./]"],
   "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true,
-  "plugins": ["@trivago/prettier-plugin-sort-imports"]
+  "importOrderSortSpecifiers": true
 }

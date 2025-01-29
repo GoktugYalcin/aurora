@@ -1,3 +1,5 @@
+import { constMoods } from '@/lib/constMoods'
+import { constSongs } from '@/lib/constSongs'
 import { createStore } from 'zustand/vanilla'
 
 export type Stage = {
@@ -7,7 +9,9 @@ export type Stage = {
 }
 
 export type StageState = {
-    stage: Stage
+  stage: Stage,
+  moods: string[],
+  songs: string[]
 }
 
 export type StageActions = {
@@ -30,15 +34,11 @@ const stages: Stage[] = [
         }]
 
 export const initStageStore = (): StageState => {
-  return { stage: stages[0] }
-}
-
-export const defaultInitState: StageState = {
-    stage: stages[0]
+  return { stage: stages[0], moods: constMoods, songs: constSongs }
 }
 
 export const createStageStore = (
-  initState: StageState = defaultInitState,
+  initState: StageState,
 ) => {
   return createStore<StageStore>()((set) => ({
     ...initState,

@@ -8,7 +8,7 @@ import { useStageStore } from '@/store/store';
 
 export function MoodSelectStage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { nextStage } = useStageStore((state) => state);
+  const { nextStage, moods } = useStageStore((state) => state);
   return (
     <>
       <Transition latency={0.1} className="text-4xl font-bold text-orange-700">
@@ -19,7 +19,7 @@ export function MoodSelectStage() {
           ref={containerRef}
           className="w-full h-full flex flex-wrap items-center justify-between gap-2 gap-y-3 prose text-left"
         >
-          {constMoods.map((text, i) =>
+          {moods.map((text, i) =>
             text === 'guilty' ? (
               <span
                 key={i}
@@ -34,12 +34,12 @@ export function MoodSelectStage() {
                 className={cn(
                   'text-2xl leading-none font-[300] cursor-pointer text-orange-600',
                 )}
-                staggerDuration={0.05}
+                staggerDuration={0.03}
                 transition={{
                   duration: 0.5,
                   type: 'spring',
                 }}
-                fromFontVariationSettings="'wght' 300, 'slnt' -10"
+                fromFontVariationSettings="'wght' 300, 'slnt' 0"
                 toFontVariationSettings="'wght' 900, 'slnt' -10"
                 onClick={() => console.log(text)}
               />

@@ -1,13 +1,16 @@
-"use client";
+'use client';
 
-import { SparklesText } from "@/components/sparkles-text";
-import VariableFontCursorProximity from "@/components/variable-font-cursor-proximity";
-import { useRef } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import { SparklesText } from '@/components/sparkles-text';
+import VariableFontCursorProximity from '@/components/variable-font-cursor-proximity';
+import { useRef } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
+  if (!containerRef) {
+    return <></>;
+  }
   return (
     <div className="min-h-screen w-full flex flex-col justify-start items-center pt-36 px-72 gap-12">
       <h1 className="text-4xl flex justify-center items-center gap-2 font-bold">
@@ -83,11 +86,11 @@ export default function Home() {
               Start your journey through sound today.
             </h2>
             <Link
-              href={"/suggest"}
+              href={'/suggest'}
               className="flex justify-center items-center gap-3 text-black px-6 py-4 text-lg bg-white hover:bg-slate-50 transition-colors rounded-full shadow cursor-pointer"
             >
               <Image
-                src={"/spotify.svg"}
+                src={'/spotify.svg'}
                 alt="spotify"
                 width={20}
                 height={20}

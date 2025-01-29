@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import React, { forwardRef, useMemo, useRef } from "react";
-import { motion, useAnimationFrame } from "motion/react";
+import React, { forwardRef, useMemo, useRef } from 'react';
+import { motion, useAnimationFrame } from 'motion/react';
 
-import { useMousePositionRef } from "@/hooks/use-mouse-position-ref";
+import { useMousePositionRef } from '@/hooks/use-mouse-position-ref';
 
 interface TextProps extends React.HTMLAttributes<HTMLSpanElement> {
   label: string;
   fromFontVariationSettings: string;
   toFontVariationSettings: string;
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef?: React.RefObject<HTMLDivElement | null>;
   radius?: number;
-  falloff?: "linear" | "exponential" | "gaussian";
+  falloff?: 'linear' | 'exponential' | 'gaussian';
 }
 
 const VariableFontCursorProximity = forwardRef<HTMLSpanElement, TextProps>(
@@ -22,12 +22,12 @@ const VariableFontCursorProximity = forwardRef<HTMLSpanElement, TextProps>(
       toFontVariationSettings,
       containerRef,
       radius = 50,
-      falloff = "linear",
+      falloff = 'linear',
       className,
       onClick,
       ...props
     },
-    ref
+    ref,
   ) => {
     const letterRefs = useRef<(HTMLSpanElement | null)[]>([]);
     const interpolatedSettingsRef = useRef<string[]>([]);
@@ -36,22 +36,22 @@ const VariableFontCursorProximity = forwardRef<HTMLSpanElement, TextProps>(
     const parsedSettings = useMemo(() => {
       const fromSettings = new Map(
         fromFontVariationSettings
-          .split(",")
+          .split(',')
           .map((s) => s.trim())
           .map((s) => {
-            const [name, value] = s.split(" ");
-            return [name.replace(/['"]/g, ""), parseFloat(value)];
-          })
+            const [name, value] = s.split(' ');
+            return [name.replace(/['"]/g, ''), parseFloat(value)];
+          }),
       );
 
       const toSettings = new Map(
         toFontVariationSettings
-          .split(",")
+          .split(',')
           .map((s) => s.trim())
           .map((s) => {
-            const [name, value] = s.split(" ");
-            return [name.replace(/['"]/g, ""), parseFloat(value)];
-          })
+            const [name, value] = s.split(' ');
+            return [name.replace(/['"]/g, ''), parseFloat(value)];
+          }),
       );
 
       return Array.from(fromSettings.entries()).map(([axis, fromValue]) => ({
@@ -65,7 +65,7 @@ const VariableFontCursorProximity = forwardRef<HTMLSpanElement, TextProps>(
       x1: number,
       y1: number,
       x2: number,
-      y2: number
+      y2: number,
     ): number => {
       return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     };
@@ -73,22 +73,22 @@ const VariableFontCursorProximity = forwardRef<HTMLSpanElement, TextProps>(
     const calculateFalloff = (distance: number): number => {
       const normalizedDistance = Math.min(
         Math.max(1 - distance / radius, 0),
-        1
+        1,
       );
 
       switch (falloff) {
-        case "exponential":
+        case 'exponential':
           return Math.pow(normalizedDistance, 2);
-        case "gaussian":
+        case 'gaussian':
           return Math.exp(-Math.pow(distance / (radius / 2), 2) / 2);
-        case "linear":
+        case 'linear':
         default:
           return normalizedDistance;
       }
     };
 
     useAnimationFrame(() => {
-      if (!containerRef.current) return;
+      if (!containerRef || !containerRef.current) return;
       const containerRect = containerRef.current.getBoundingClientRect();
 
       letterRefs.current.forEach((letterRef, index) => {
@@ -102,7 +102,7 @@ const VariableFontCursorProximity = forwardRef<HTMLSpanElement, TextProps>(
           mousePositionRef.current.x,
           mousePositionRef.current.y,
           letterCenterX,
-          letterCenterY
+          letterCenterY,
         );
 
         if (distance >= radius) {
@@ -122,14 +122,14 @@ const VariableFontCursorProximity = forwardRef<HTMLSpanElement, TextProps>(
               fromValue + (toValue - fromValue) * falloffValue;
             return `'${axis}' ${interpolatedValue}`;
           })
-          .join(", ");
+          .join(', ');
 
         interpolatedSettingsRef.current[index] = newSettings;
         letterRef.style.fontVariationSettings = newSettings;
       });
     });
 
-    const words = label.split(" ");
+    const words = label.split(' ');
     let letterIndex = 0;
 
     return (
@@ -141,7 +141,7 @@ const VariableFontCursorProximity = forwardRef<HTMLSpanElement, TextProps>(
       >
         {words.map((word, wordIndex) => (
           <span key={wordIndex} className="inline-block whitespace-nowrap">
-            {word.split("").map((letter) => {
+            {word.split('').map((letter) => {
               const currentLetterIndex = letterIndex++;
               return (
                 <motion.span
@@ -168,8 +168,8 @@ const VariableFontCursorProximity = forwardRef<HTMLSpanElement, TextProps>(
         <span className="sr-only">{label}</span>
       </span>
     );
-  }
+  },
 );
 
-VariableFontCursorProximity.displayName = "VariableFontCursorProximity";
+VariableFontCursorProximity.displayName = 'VariableFontCursorProximity';
 export default VariableFontCursorProximity;
