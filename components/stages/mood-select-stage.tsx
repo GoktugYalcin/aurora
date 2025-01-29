@@ -1,10 +1,10 @@
-import { constMoods } from "@/lib/constMoods";
-import Transition from "../transition";
-import { ArrowRight, RotateCw } from "lucide-react";
-import VariableFontHoverByLetter from "../variable-font-hover-by-letter";
-import { Ref, useRef } from "react";
-import { cn } from "@/lib/utils";
-import { useStageStore } from "@/store/store";
+import { constMoods } from '@/lib/constMoods';
+import Transition from '../transition';
+import { ArrowRight, RotateCw } from 'lucide-react';
+import VariableFontHoverByLetter from '../variable-font-hover-by-letter';
+import { useRef } from 'react';
+import { cn } from '@/lib/utils';
+import { useStageStore } from '@/store/store';
 
 export function MoodSelectStage() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -20,7 +20,7 @@ export function MoodSelectStage() {
           className="w-full h-full flex flex-wrap items-center justify-between gap-2 gap-y-3 prose text-left"
         >
           {constMoods.map((text, i) =>
-            text === "guilty" ? (
+            text === 'guilty' ? (
               <span
                 key={i}
                 className="text-2xl leading-none font-bold cursor-pointer text-orange-600"
@@ -32,15 +32,18 @@ export function MoodSelectStage() {
                 key={i}
                 label={text}
                 className={cn(
-                  "text-2xl leading-none font-[300] cursor-pointer text-orange-600"
+                  'text-2xl leading-none font-[300] cursor-pointer text-orange-600',
                 )}
                 staggerDuration={0.05}
-                transition={{ duration: 0.5, type: "spring" }}
+                transition={{
+                  duration: 0.5,
+                  type: 'spring',
+                }}
                 fromFontVariationSettings="'wght' 300, 'slnt' -10"
                 toFontVariationSettings="'wght' 900, 'slnt' -10"
                 onClick={() => console.log(text)}
               />
-            )
+            ),
           )}
         </div>
       </Transition>

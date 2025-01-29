@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { useStageStore } from "@/store/store";
 import { Outfit } from "next/font/google";
 import Link from "next/link";
 
@@ -10,7 +9,8 @@ export function AppName() {
     <Link
       href={"/"}
       className={cn(
-        "font-[800] fixed top-6 left-6 text-3xl z-20 text-slate-700/90"
+        "font-[800] fixed top-6 left-6 text-3xl z-20 text-slate-700/90",
+        outfit.className
       )}
     >
       Aurora

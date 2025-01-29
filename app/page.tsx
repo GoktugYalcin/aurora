@@ -16,7 +16,7 @@ export default function Home() {
       </h1>
 
       <div className="flex flex-col justify-start items-start px-60 pt-12">
-        <span className="font-semibold text-lg">What is it?</span>
+        <span className="font-semibold text-xl mb-2">What is it?</span>
         <div
           ref={containerRef}
           className="flex flex-col justify-start items-start gap-3"

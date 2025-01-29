@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
-import AnimatedGradient from "@/components/animated-gradient-with-svg";
 import "./globals.css";
 import Transition from "@/components/transition";
 import Link from "next/link";
