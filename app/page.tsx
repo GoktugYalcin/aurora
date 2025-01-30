@@ -5,6 +5,7 @@ import VariableFontCursorProximity from '@/components/variable-font-cursor-proxi
 import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { AuthenticationStage } from '@/components/stages/authentication-stage';
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -85,18 +86,7 @@ export default function Home() {
             <h2 className="text-2xl font-bold text-center mb-6">
               Start your journey through sound today.
             </h2>
-            <Link
-              href={'/suggest'}
-              className="flex justify-center items-center gap-3 text-black px-6 py-4 text-lg bg-white hover:bg-slate-50 transition-colors rounded-full shadow cursor-pointer"
-            >
-              <Image
-                src={'/spotify.svg'}
-                alt="spotify"
-                width={20}
-                height={20}
-              />
-              <span>Login with Spotify </span>
-            </Link>
+            <AuthenticationStage />
           </div>
         </div>
       </div>

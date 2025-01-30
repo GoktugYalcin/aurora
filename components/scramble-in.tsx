@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   forwardRef,
@@ -6,7 +6,7 @@ import {
   useEffect,
   useImperativeHandle,
   useState,
-} from "react";
+} from 'react';
 
 interface ScrambleInProps {
   text: string;
@@ -31,16 +31,16 @@ const ScrambleIn = forwardRef<ScrambleInHandle, ScrambleInProps>(
       text,
       scrambleSpeed = 50,
       scrambledLetterCount = 2,
-      characters = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()_+",
-      className = "",
-      scrambledClassName = "",
+      characters = 'abcdefghijklmnopqrstuvwxyz!@#$%^&*()_+',
+      className = '',
+      scrambledClassName = '',
       autoStart = true,
       onStart,
       onComplete,
     },
-    ref
+    ref,
   ) => {
-    const [displayText, setDisplayText] = useState("");
+    const [displayText, setDisplayText] = useState('');
     const [isAnimating, setIsAnimating] = useState(false);
     const [visibleLetterCount, setVisibleLetterCount] = useState(0);
     const [scrambleOffset, setScrambleOffset] = useState(0);
@@ -56,7 +56,7 @@ const ScrambleIn = forwardRef<ScrambleInHandle, ScrambleInProps>(
       setIsAnimating(false);
       setVisibleLetterCount(0);
       setScrambleOffset(0);
-      setDisplayText("");
+      setDisplayText('');
     }, []);
 
     useImperativeHandle(ref, () => ({
@@ -75,35 +75,28 @@ const ScrambleIn = forwardRef<ScrambleInHandle, ScrambleInProps>(
 
       if (isAnimating) {
         interval = setInterval(() => {
-          // Increase visible text length
           if (visibleLetterCount < text.length) {
             setVisibleLetterCount((prev) => prev + 1);
-          }
-          // Start sliding scrambled text out
-          else if (scrambleOffset < scrambledLetterCount) {
+          } else if (scrambleOffset < scrambledLetterCount) {
             setScrambleOffset((prev) => prev + 1);
-          }
-          // Complete animation
-          else {
+          } else {
             clearInterval(interval);
             setIsAnimating(false);
             onComplete?.();
           }
 
-          // Calculate how many scrambled letters we can show
           const remainingSpace = Math.max(0, text.length - visibleLetterCount);
           const currentScrambleCount = Math.min(
             remainingSpace,
-            scrambledLetterCount
+            scrambledLetterCount,
           );
 
-          // Generate scrambled text
           const scrambledPart = Array(currentScrambleCount)
             .fill(0)
             .map(
-              () => characters[Math.floor(Math.random() * characters.length)]
+              () => characters[Math.floor(Math.random() * characters.length)],
             )
-            .join("");
+            .join('');
 
           setDisplayText(text.slice(0, visibleLetterCount) + scrambledPart);
         }, scrambleSpeed);
@@ -143,8 +136,8 @@ const ScrambleIn = forwardRef<ScrambleInHandle, ScrambleInProps>(
         </span>
       </>
     );
-  }
+  },
 );
 
-ScrambleIn.displayName = "ScrambleIn";
+ScrambleIn.displayName = 'ScrambleIn';
 export default ScrambleIn;

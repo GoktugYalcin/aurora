@@ -4,7 +4,8 @@
   "trailingComma": "all",
   "singleQuote": true,
   "semi": true,
-  "importOrder": ["<THIRD_PARTY_MODULES>", "^@/components/stages/(.*)$", "^@/components/(.*)$", "^@/hooks/(.*)$", "^@/lib/(.*)$", "^@/store/(.*)$", "^[./]"],
+  "importOrder": ["^react$","<THIRD_PARTY_MODULES>", "^@/components/stages/(.*)$", "^@/components/(.*)$", "^@/hooks/(.*)$", "^@/lib/(.*)$", "^@/store/(.*)$", "^[./]"],
   "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true
+  "importOrderSortSpecifiers": true,
+  "plugins": ["@trivago/prettier-plugin-sort-imports"]
 }

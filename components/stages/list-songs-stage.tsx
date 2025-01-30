@@ -1,26 +1,45 @@
-import Transition from '../transition';
+'use client';
+
+import React, { useEffect, useState } from 'react';
+
+import { SpotifyTrack } from '@/types';
 import { ListMusic } from 'lucide-react';
-import { motion } from 'motion/react';
-import { useEffect, useRef } from 'react';
+
+import { ListSongs } from '@/components/list-songs';
+import Transition from '@/components/transition';
+
 import { cn } from '@/lib/utils';
-import ScrambleHover from '@/components/scramble-hover';
 
-import { ScrambleInHandle } from '../scramble-in';
-import { constSongs } from '@/lib/constSongs';
-import { useStageStore } from '@/store/store';
-
-export function ListSongsStage() {
-  const scrambleRefs = useRef<(ScrambleInHandle | null)[]>([]);
-  const songs = useStageStore((state) => state.songs);
+export function ListSongsStage({ songs }: { songs: string[] }) {
+  const [songMetadata, setSongMetadata] = useState<SpotifyTrack[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    constSongs.forEach((_, index) => {
-      const delay = index * 50;
-      setTimeout(() => {
-        scrambleRefs.current[index]?.start();
-      }, delay);
-    });
-  }, []);
+    const fetchSongs = async () => {
+      setLoading(true);
+
+      try {
+        const res = await fetch('/api/find-songs', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ songs }),
+        });
+
+        if (!res.ok) throw new Error('Failed to fetch songs');
+
+        const data: { songs: SpotifyTrack[] } = await res.json();
+        setSongMetadata(data.songs);
+      } catch (error) {
+        console.error('Error fetching songs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (songs.length > 0) {
+      fetchSongs();
+    }
+  }, [songs]);
 
   return (
     <>
@@ -30,34 +49,13 @@ export function ListSongsStage() {
       >
         There it is! We select the songs for your mood:
       </Transition>
-      <Transition latency={0.4} className="w-1/2">
-        <div className="w-full h-full flex flex-col items-start justify-start gap-y-3">
-          {songs.map((text, index) => (
-            <motion.div
-              layout
-              key={index}
-              animate={{ opacity: [0, 1, 1], y: [10, 10, 0] }}
-              transition={{
-                duration: 0.1,
-                ease: 'circInOut',
-                delay: index * 0.05 + 0.5,
-                times: [0, 0.2, 1],
-              }}
-            >
-              <ScrambleHover
-                text={`${index + 1} - ${text}`}
-                scrambleSpeed={50}
-                maxIterations={8}
-                useOriginalCharsOnly={true}
-                className={cn(
-                  'text-2xl leading-none font-[300] cursor-pointer',
-                  'text-blue-600',
-                )}
-              />
-            </motion.div>
-          ))}
-        </div>
-      </Transition>
+
+      {loading ? (
+        <p className="text-center text-gray-500">Loading songs...</p>
+      ) : (
+        <ListSongs songs={songMetadata} />
+      )}
+
       <Transition
         latency={0.4}
         className="w-screen flex justify-center items-center gap-6"

@@ -1,10 +1,16 @@
 'use client';
+
 import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
-import { MoodSelectStage } from '@/components/stages/mood-select-stage';
-import { ListSongsStage } from '@/components/stages/list-songs-stage';
-import { useStageStore } from '@/store/store';
+
 import { AnimatePresence } from 'motion/react';
+import { useSession } from 'next-auth/react';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
+
+import { ListSongsStage } from '@/components/stages/list-songs-stage';
+import { MoodSelectStage } from '@/components/stages/mood-select-stage';
+
+import { useStageStore } from '@/store/store';
 
 const AnimatedGradient = dynamic(
   () => import('../../components/animated-gradient-with-svg'),
@@ -12,8 +18,16 @@ const AnimatedGradient = dynamic(
 );
 
 export default function SuggestPage() {
-  const { stage } = useStageStore((state) => state);
+  const { stage, songs } = useStageStore((state) => state);
   const [colorArr, setColor] = useState<string[]>(stage.colors);
+  const { status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/');
+    }
+  }, [status, router]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -26,7 +40,9 @@ export default function SuggestPage() {
       <AnimatedGradient colors={colorArr} speed={0.12} blur="medium" />
       <AnimatePresence mode="wait">
         {stage.type === 'selection' && <MoodSelectStage key="selection" />}
-        {stage.type === 'listing' && <ListSongsStage key="listing" />}
+        {stage.type === 'listing' && (
+          <ListSongsStage songs={songs} key="listing" />
+        )}
       </AnimatePresence>
     </main>
   );

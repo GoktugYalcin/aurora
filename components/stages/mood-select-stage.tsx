@@ -1,4 +1,3 @@
-import { constMoods } from '@/lib/constMoods';
 import Transition from '../transition';
 import { ArrowRight, RotateCw } from 'lucide-react';
 import VariableFontHoverByLetter from '../variable-font-hover-by-letter';
@@ -9,6 +8,7 @@ import { useStageStore } from '@/store/store';
 export function MoodSelectStage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { nextStage, moods } = useStageStore((state) => state);
+
   return (
     <>
       <Transition latency={0.1} className="text-4xl font-bold text-orange-700">
