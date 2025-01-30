@@ -14,7 +14,6 @@ import { constSongs } from '@/lib/constSongs';
 import { cn } from '@/lib/utils';
 
 export const ListSongs: React.FC<{ songs: SpotifyTrack[] }> = ({ songs }) => {
-  console.log({ songs });
   const scrambleRefs = useRef<(ScrambleInHandle | null)[]>([]);
 
   useEffect(() => {
