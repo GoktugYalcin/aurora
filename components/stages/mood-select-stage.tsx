@@ -2,6 +2,8 @@ import { useRef } from 'react';
 
 import { ArrowRight, RotateCw } from 'lucide-react';
 
+import { ListMoods } from '@/components/list-moods';
+
 import { cn } from '@/lib/utils';
 
 import { useStageStore } from '@/store/store';
@@ -17,41 +19,18 @@ export function MoodSelectStage() {
 
   return (
     <>
-      <Transition latency={0.1} className="text-4xl font-bold text-orange-700">
+      <Transition
+        latency={0.1}
+        className="lg:text-4xl text-xl font-bold text-orange-700 lg:px-0 lg:mt-0 mt-12 px-8 text-center"
+      >
         Choose the max 5 moods that you feel
       </Transition>
       <Transition latency={0.1}>
         <div
           ref={containerRef}
-          className="w-full h-full flex flex-wrap justify-between gap-2 gap-y-4 prose text-center select-none"
+          className="w-full h-full flex flex-wrap justify-between gap-2 gap-y-4 prose text-center select-none lg:px-0 px-12"
         >
-          {moods.map((text, i) =>
-            selectedMoods.includes(text) ? (
-              <span
-                key={i}
-                className="text-2xl leading-none font-bold cursor-pointer text-orange-600"
-                onClick={() => toggleSelectedMood(text)}
-              >
-                {text}
-              </span>
-            ) : (
-              <VariableFontHoverByLetter
-                key={i}
-                label={text}
-                className={cn(
-                  'text-2xl leading-none font-[300] cursor-pointer text-orange-600',
-                )}
-                staggerDuration={0.03}
-                transition={{
-                  duration: 0.5,
-                  type: 'spring',
-                }}
-                fromFontVariationSettings="'wght' 300, 'slnt' 0"
-                toFontVariationSettings="'wght' 900, 'slnt' -10"
-                onClick={() => toggleSelectedMood(text)}
-              />
-            ),
-          )}
+          <ListMoods />
         </div>
       </Transition>
       <Transition
