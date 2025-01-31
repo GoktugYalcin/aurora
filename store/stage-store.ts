@@ -16,11 +16,13 @@ export type StageState = {
   selectedMoods: string[];
   songs: string[];
   parsedSongs: SpotifyTrack[];
+  playlistName: string;
 };
 
 export type StageActions = {
   nextStage: () => void;
   prevStage: () => void;
+  setPlaylistName: (name: string) => void;
   setParsedSongs: (songs: SpotifyTrack[]) => void;
   toggleSelectedMood: (mood: string) => void;
 };
@@ -47,6 +49,7 @@ export const initStageStore = (): StageState => {
     selectedMoods: [],
     songs: constSongs ?? [],
     parsedSongs: [],
+    playlistName: '',
   };
 };
 
@@ -89,6 +92,10 @@ export const createStageStore = (initState: StageState) => {
     setParsedSongs: (parsedSongs: SpotifyTrack[]) =>
       set((state) => {
         return { parsedSongs };
+      }),
+    setPlaylistName: (name: string) =>
+      set((state) => {
+        return { playlistName: name };
       }),
   }));
 };
