@@ -37,7 +37,7 @@ export default function SuggestPage() {
 
   return (
     <main className="flex flex-col justify-center items-center w-full min-h-screen gap-20">
-      <AnimatedGradient colors={colorArr} speed={0.12} blur="medium" />
+      <AnimatedGradient colors={colorArr} speed={0.12} blur="heavy" />
       <AnimatePresence mode="wait">
         {stage.type === 'selection' && <MoodSelectStage key="selection" />}
         {stage.type === 'listing' && (

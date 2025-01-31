@@ -11,7 +11,7 @@ export const AuthenticationStage: React.FC<{ key?: string }> = () => {
   return !session ? (
     <span
       onClick={() => signIn('spotify', { callbackUrl: '/suggest' })}
-      className="flex justify-center items-center gap-3 text-black px-6 py-4 text-lg bg-white hover:bg-slate-50 transition-colors rounded-full shadow cursor-pointer"
+      className="flex justify-center items-center gap-3 text-black px-6 py-4 text-lg bg-white hover:bg-slate-100 transition-colors rounded-full shadow cursor-pointer"
     >
       <Image src={'/spotify.svg'} alt="spotify" width={20} height={20} />
       <span>Login with Spotify</span>
@@ -21,8 +21,8 @@ export const AuthenticationStage: React.FC<{ key?: string }> = () => {
       <div className="flex justify-center items-center pb-2 text-md">
         <span className="mr-3">Logged as:</span>{' '}
         <Image
-          src={session.user?.image}
-          alt={session.user?.name}
+          src={session?.user?.image!}
+          alt={session?.user?.name!}
           width={30}
           height={30}
           className="rounded-full mr-1"

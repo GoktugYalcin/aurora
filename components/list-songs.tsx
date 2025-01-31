@@ -40,17 +40,17 @@ export const ListSongs: React.FC<{ songs: SpotifyTrack[] }> = ({ songs }) => {
                 delay: index * 0.05 + 0.5,
                 times: [0, 0.2, 1],
               }}
-              className={'flex justify-center items-center gap-2'}
+              className={'flex justify-center items-center gap-4 group'}
             >
               <VariableFontHoverByLetter
                 label={`${index + 1} - ${song.artist} - ${song.name}`}
                 staggerDuration={0.0}
                 transition={{ duration: 1, type: 'spring' }}
-                fromFontVariationSettings="'wght' 300, 'slnt' -10"
+                fromFontVariationSettings="'wght' 400, 'slnt' -10"
                 toFontVariationSettings="'wght' 900, 'slnt' -10"
                 className={cn(
-                  'text-2xl leading-none font-[300] cursor-pointer text-ellipsis overflow-hidden',
-                  'text-blue-600',
+                  'text-2xl leading-none font-[400] cursor-pointer text-ellipsis overflow-hidden',
+                  'text-blue-700 h-[30px]',
                 )}
               />
               <Image
@@ -58,7 +58,7 @@ export const ListSongs: React.FC<{ songs: SpotifyTrack[] }> = ({ songs }) => {
                 alt={song.name}
                 width={30}
                 height={30}
-                className={'border-2 border-white'}
+                className={'border-2 border-white hidden group-hover:block'}
               />
             </motion.div>
           </Link>

@@ -2,11 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { SpotifyTrack } from '@/types';
+import { SpotifyTrack } from '@/types/spotify';
 import { ListMusic } from 'lucide-react';
 
 import { ListSongs } from '@/components/list-songs';
+import { ListSongsSkeleton } from '@/components/list-songs-skeleton';
 import Transition from '@/components/transition';
+
+import { toast } from '@/hooks/use-toast';
 
 import { cn } from '@/lib/utils';
 
@@ -25,12 +28,18 @@ export function ListSongsStage({ songs }: { songs: string[] }) {
           body: JSON.stringify({ songs }),
         });
 
-        if (!res.ok) throw new Error('Failed to fetch songs');
+        if (!res.ok) throw new Error(res.statusText);
 
         const data: { songs: SpotifyTrack[] } = await res.json();
         setSongMetadata(data.songs);
       } catch (error) {
-        console.error('Error fetching songs:', error);
+        const message =
+          error instanceof Error ? error.message : 'Please, try again later.';
+        toast({
+          variant: 'destructive',
+          title: 'Uh oh! Something went wrong.',
+          description: `There was a problem with your request: ${message ?? 'Please, try again later.'}`,
+        });
       } finally {
         setLoading(false);
       }
@@ -50,21 +59,8 @@ export function ListSongsStage({ songs }: { songs: string[] }) {
         There it is! We select the songs for your mood:
       </Transition>
 
-      {loading ? (
-        <Transition latency={0.4} className="w-1/2 animate-pulse">
-          <div className="h-5 bg-gray-400 rounded dark:bg-gray-700 mb-4 max-w-[600px]"></div>
-          <div className="h-5 bg-gray-400 rounded dark:bg-gray-700 mb-4 max-w-[650px]"></div>
-          <div className="h-5 bg-gray-400 rounded dark:bg-gray-700 mb-4 max-w-[610px]"></div>
-          <div className="h-5 bg-gray-400 rounded dark:bg-gray-700 mb-4 max-w-[680px]"></div>
-          <div className="h-5 bg-gray-400 rounded dark:bg-gray-700 mb-4 max-w-[630px]"></div>
-          <div className="h-5 bg-gray-400 rounded dark:bg-gray-700 mb-4 max-w-[640px]"></div>
-          <div className="h-5 bg-gray-400 rounded dark:bg-gray-700 mb-4 max-w-[660px]"></div>
-          <div className="h-5 bg-gray-400 rounded dark:bg-gray-700 mb-4 max-w-[600px]"></div>
-          <div className="h-5 bg-gray-400 rounded dark:bg-gray-700 mb-4 max-w-[690px]"></div>
-          <div className="h-5 bg-gray-400 rounded dark:bg-gray-700 mb-4 max-w-[670px]"></div>
-          <div className="h-5 bg-gray-400 rounded dark:bg-gray-700 mb-4 max-w-[620px]"></div>
-          <div className="h-5 bg-gray-400 rounded dark:bg-gray-700 mb-4 max-w-[700px]"></div>
-        </Transition>
+      {loading || !songMetadata?.length ? (
+        <ListSongsSkeleton />
       ) : (
         <ListSongs songs={songMetadata} />
       )}

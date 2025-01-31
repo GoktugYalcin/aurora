@@ -1,14 +1,15 @@
-"use client";
+'use client';
 
-import React, { useMemo, useRef } from "react";
+import React, { useMemo, useRef } from 'react';
 
-import { cn } from "@/lib/utils";
-import { useDimensions } from "@/hooks/use-debounced-dimensions";
+import { useDimensions } from '@/hooks/use-debounced-dimensions';
+
+import { cn } from '@/lib/utils';
 
 interface AnimatedGradientProps {
   colors: string[];
   speed?: number;
-  blur?: "light" | "medium" | "heavy";
+  blur?: 'light' | 'medium' | 'heavy';
 }
 
 const randomInt = (min: number, max: number) => {
@@ -18,27 +19,27 @@ const randomInt = (min: number, max: number) => {
 const AnimatedGradient: React.FC<AnimatedGradientProps> = ({
   colors,
   speed = 5,
-  blur = "light",
+  blur = 'light',
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useDimensions(containerRef);
 
   const circleSize = useMemo(
     () => Math.max(dimensions.width, dimensions.height),
-    [dimensions.width, dimensions.height]
+    [dimensions.width, dimensions.height],
   );
 
   const blurClass =
-    blur === "light"
-      ? "blur-2xl"
-      : blur === "medium"
-      ? "blur-3xl"
-      : "blur-[100px]";
+    blur === 'light'
+      ? 'blur-2xl'
+      : blur === 'medium'
+        ? 'blur-3xl'
+        : 'blur-[100px]';
 
   return (
     <div
       ref={containerRef}
-      className="absolute transition-colors inset-0 overflow-hidden -z-2 bg-[url(/noise.svg);]"
+      className="absolute transition-colors inset-0 min-h-screen overflow-hidden -z-2 bg-[url(/noise.svg);]"
     >
       <div className={cn(`absolute inset-0 transition-colors`, blurClass)}>
         {colors.map((color, index) => (
@@ -49,15 +50,15 @@ const AnimatedGradient: React.FC<AnimatedGradientProps> = ({
               {
                 top: `${Math.random() * 50}%`,
                 left: `${Math.random() * 50}%`,
-                "--background-gradient-speed": `${1 / speed}s`,
-                "--tx-1": Math.random() - 0.5,
-                "--ty-1": Math.random() - 0.5,
-                "--tx-2": Math.random() - 0.5,
-                "--ty-2": Math.random() - 0.5,
-                "--tx-3": Math.random() - 0.5,
-                "--ty-3": Math.random() - 0.5,
-                "--tx-4": Math.random() - 0.5,
-                "--ty-4": Math.random() - 0.5,
+                '--background-gradient-speed': `${1 / speed}s`,
+                '--tx-1': Math.random() - 0.5,
+                '--ty-1': Math.random() - 0.5,
+                '--tx-2': Math.random() - 0.5,
+                '--ty-2': Math.random() - 0.5,
+                '--tx-3': Math.random() - 0.5,
+                '--ty-3': Math.random() - 0.5,
+                '--tx-4': Math.random() - 0.5,
+                '--ty-4': Math.random() - 0.5,
               } as React.CSSProperties
             }
             width={circleSize * randomInt(0.5, 1.5)}

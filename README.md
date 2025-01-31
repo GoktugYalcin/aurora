@@ -26,21 +26,25 @@ Aurora is a Next.js-powered app designed to match your mood with the perfect son
    ```
 2. Install dependencies:
    ```bash
-   npm install  # or yarn install
+   pnpm install  # or yarn install
    ```
 3. Set up environment variables:
    Create a `.env.local` file and add your Spotify API credentials:
    ```env
-   NEXT_PUBLIC_SPOTIFY_CLIENT_ID=your-client-id
-   NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET=your-client-secret
-   NEXT_PUBLIC_SPOTIFY_REDIRECT_URI=http://localhost:3000/callback
+   SPOTIFY_CLIENT_ID=your-client-id
+   SPOTIFY_CLIENT_SECRET=your-client-secret
+   SPOTIFY_REDIRECT_URI=/api/auth/callback/spotify
+   SPOTIFY_AUTHORIZATION_URL=authorization url from spotify
+   
+   NEXTAUTH_URL=your base url
+   NEXTAUTH_SECRET='you can create with openssl command'
    ```
 
 ## 🛠 Usage
 
 1. Start the development server:
    ```bash
-   npm run dev  # or yarn dev
+   pnpm run dev  # or yarn dev
    ```
 2. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
