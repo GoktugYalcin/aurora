@@ -26,7 +26,7 @@ export const ListSongs: React.FC<{ songs: SpotifyTrack[] }> = ({ songs }) => {
   }, []);
 
   return (
-    <Transition latency={0.4} className="w-1/2">
+    <Transition latency={0.4} className="lg:w-1/2 px-8">
       <div className="w-full h-full flex flex-col items-start justify-start gap-y-3">
         {songs.map((song, index) => (
           <Link href={song.spotifyUrl} key={index} target={'_blank'}>
@@ -49,7 +49,7 @@ export const ListSongs: React.FC<{ songs: SpotifyTrack[] }> = ({ songs }) => {
                 fromFontVariationSettings="'wght' 400, 'slnt' -10"
                 toFontVariationSettings="'wght' 900, 'slnt' -10"
                 className={cn(
-                  'text-2xl leading-none font-[400] cursor-pointer text-ellipsis overflow-hidden',
+                  'lg:text-2xl leading-none font-[400] cursor-pointer text-ellipsis overflow-hidden',
                   'text-blue-700 h-[30px]',
                 )}
               />

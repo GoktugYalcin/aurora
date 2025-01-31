@@ -13,25 +13,26 @@ import { toast } from '@/hooks/use-toast';
 
 import { cn } from '@/lib/utils';
 
+import { useStageStore } from '@/store/store';
+
 export function ListSongsStage({ songs }: { songs: string[] }) {
-  const [songMetadata, setSongMetadata] = useState<SpotifyTrack[]>([]);
+  const { parsedSongs, setParsedSongs } = useStageStore((state) => state);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchSongs = async () => {
       setLoading(true);
-
       try {
         const res = await fetch('/api/find-songs', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ songs }),
+          body: JSON.stringify({ songs: songs }),
         });
 
         if (!res.ok) throw new Error(res.statusText);
 
         const data: { songs: SpotifyTrack[] } = await res.json();
-        setSongMetadata(data.songs);
+        setParsedSongs(data.songs);
       } catch (error) {
         const message =
           error instanceof Error ? error.message : 'Please, try again later.';
@@ -48,7 +49,7 @@ export function ListSongsStage({ songs }: { songs: string[] }) {
     if (songs.length > 0) {
       fetchSongs();
     }
-  }, [songs]);
+  }, []);
 
   return (
     <>
@@ -59,13 +60,13 @@ export function ListSongsStage({ songs }: { songs: string[] }) {
         There it is! We select the songs for your mood:
       </Transition>
 
-      {loading || !songMetadata?.length ? (
+      {loading || !parsedSongs?.length ? (
         <ListSongsSkeleton />
       ) : (
-        <ListSongs songs={songMetadata} />
+        <ListSongs songs={parsedSongs} />
       )}
 
-      {songMetadata.length > 0 && <GenerateListButton songs={songMetadata} />}
+      {parsedSongs.length > 0 && <GenerateListButton songs={parsedSongs} />}
     </>
   );
 }

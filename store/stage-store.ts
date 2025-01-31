@@ -1,3 +1,4 @@
+import { SpotifyTrack } from '@/types/spotify';
 import { createStore } from 'zustand/vanilla';
 
 import { constMoods } from '@/lib/constMoods';
@@ -14,11 +15,13 @@ export type StageState = {
   moods: string[];
   selectedMoods: string[];
   songs: string[];
+  parsedSongs: SpotifyTrack[];
 };
 
 export type StageActions = {
   nextStage: () => void;
   prevStage: () => void;
+  setParsedSongs: (songs: SpotifyTrack[]) => void;
   toggleSelectedMood: (mood: string) => void;
 };
 
@@ -40,9 +43,10 @@ const stages: Stage[] = [
 export const initStageStore = (): StageState => {
   return {
     stage: stages[0],
-    moods: constMoods,
-    songs: constSongs,
+    moods: constMoods ?? [],
     selectedMoods: [],
+    songs: constSongs ?? [],
+    parsedSongs: [],
   };
 };
 
@@ -81,6 +85,10 @@ export const createStageStore = (initState: StageState) => {
           return { selectedMoods: state.selectedMoods };
         }
         return { selectedMoods: [...state.selectedMoods, mood] };
+      }),
+    setParsedSongs: (parsedSongs: SpotifyTrack[]) =>
+      set((state) => {
+        return { parsedSongs };
       }),
   }));
 };
