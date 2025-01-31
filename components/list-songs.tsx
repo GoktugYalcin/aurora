@@ -58,7 +58,9 @@ export const ListSongs: React.FC<{ songs: SpotifyTrack[] }> = ({ songs }) => {
                 alt={song.name}
                 width={30}
                 height={30}
-                className={'border-2 border-white hidden group-hover:block'}
+                className={
+                  'border-2 border-white hidden group-hover:block -mt-2'
+                }
               />
             </motion.div>
           </Link>
