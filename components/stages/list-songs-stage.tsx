@@ -55,7 +55,10 @@ export function ListSongsStage({ songs }: { songs: string[] }) {
     <>
       <Transition
         latency={0.3}
-        className={cn('text-4xl font-bold', 'text-blue-700')}
+        className={cn(
+          'lg:text-4xl text-xl lg:px-0 px-8 lg:pt-0 pt-10 font-bold',
+          'text-blue-700',
+        )}
       >
         There it is! We select the songs for your mood:
       </Transition>
