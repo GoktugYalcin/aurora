@@ -12,3 +12,17 @@ export interface SpotifySearchResponse {
     items: SpotifyTrack[];
   };
 }
+
+export interface CreatePlaylistRequestBody {
+  songIds: string[];
+  playlistName: string;
+}
+
+export interface CreatePlaylistResponse {
+  playlistId: string;
+  playlistName: string;
+  playlistDescription: string;
+  totalTracks: string;
+  playlistUrl: string;
+  playlistImage: string | null;
+}

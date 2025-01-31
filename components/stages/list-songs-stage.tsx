@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 
 import { SpotifyTrack } from '@/types/spotify';
-import { ListMusic } from 'lucide-react';
 
+import { GenerateListButton } from '@/components/generate-list-button';
 import { ListSongs } from '@/components/list-songs';
 import { ListSongsSkeleton } from '@/components/list-songs-skeleton';
 import Transition from '@/components/transition';
@@ -65,20 +65,7 @@ export function ListSongsStage({ songs }: { songs: string[] }) {
         <ListSongs songs={songMetadata} />
       )}
 
-      <Transition
-        latency={0.4}
-        className="w-screen flex justify-center items-center gap-6"
-      >
-        <div
-          className={cn(
-            'group flex justify-center items-center gap-2 px-6 py-2 cursor-pointer rounded-full select-none active:font-semibold active:translate-y-0.5 active:transition-all',
-            'bg-blue-200 text-blue-500 active:bg-blue-300/90',
-          )}
-        >
-          <span className="text-xl">Generate List</span>
-          <ListMusic className="w-4 h-4 group-hover:animate-bounce transition-all" />
-        </div>
-      </Transition>
+      {songMetadata.length > 0 && <GenerateListButton songs={songMetadata} />}
     </>
   );
 }

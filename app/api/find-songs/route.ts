@@ -40,6 +40,7 @@ export async function POST(req: NextRequest) {
         const data = await response.json();
         if (data.tracks.items.length > 0) {
           const track = data.tracks.items[0];
+          console.log(track);
           results.push({
             name: track.name,
             id: track.id,
