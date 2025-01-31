@@ -16,6 +16,7 @@ Aurora is a Next.js-powered app designed to match your mood with the perfect son
 - **Framer Motion** – Smooth and interactive animations.
 - **Spotify API** – Fetch and manage music data.
 - **Zustand** – State management for a lightweight and efficient store.
+- **NextAuth.js** – Social authentication and permission management.
 
 ## 📦 Installation
 
