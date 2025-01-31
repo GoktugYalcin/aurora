@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${font.className}`}>
-        <div className="min-w-full min-h-screen bg-green-50 rounded-xl antialiased">
+        <div className="w-full min-h-screen bg-green-50 antialiased">
           <WrappedSession>
             <StageStoreProvider>
               <Toaster />

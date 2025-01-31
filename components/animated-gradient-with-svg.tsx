@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 interface AnimatedGradientProps {
   colors: string[];
   speed?: number;
-  blur?: 'light' | 'medium' | 'heavy';
+  blur?: 'light' | 'medium' | 'heavy' | 'heavy-xl';
 }
 
 const randomInt = (min: number, max: number) => {
@@ -30,18 +30,25 @@ const AnimatedGradient: React.FC<AnimatedGradientProps> = ({
   );
 
   const blurClass =
-    blur === 'light'
-      ? 'blur-2xl'
-      : blur === 'medium'
-        ? 'blur-3xl'
-        : 'blur-[100px]';
+    blur === 'heavy-xl'
+      ? 'blur-4xl'
+      : blur === 'light'
+        ? 'blur-2xl'
+        : blur === 'medium'
+          ? 'blur-3xl'
+          : 'blur-[100px]';
 
   return (
     <div
       ref={containerRef}
       className="absolute transition-colors inset-0 min-h-screen overflow-hidden -z-2 bg-[url(/noise.svg);]"
     >
-      <div className={cn(`absolute inset-0 transition-colors`, blurClass)}>
+      <div
+        className={cn(
+          `absolute inset-0 min-h-screen transition-colors`,
+          blurClass,
+        )}
+      >
         {colors.map((color, index) => (
           <svg
             key={index}

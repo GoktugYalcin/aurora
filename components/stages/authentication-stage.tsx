@@ -11,7 +11,7 @@ export const AuthenticationStage: React.FC<{ key?: string }> = () => {
   return !session ? (
     <span
       onClick={() => signIn('spotify', { callbackUrl: '/suggest' })}
-      className="flex justify-center items-center gap-3 text-black px-6 py-4 text-lg bg-white hover:bg-slate-100 transition-colors rounded-full shadow cursor-pointer"
+      className="flex justify-center items-center gap-3 text-black px-6 py-4 lg:text-lg text-sm bg-white hover:bg-slate-100 transition-colors rounded-full shadow cursor-pointer"
     >
       <Image src={'/spotify.svg'} alt="spotify" width={20} height={20} />
       <span>Login with Spotify</span>
@@ -32,13 +32,13 @@ export const AuthenticationStage: React.FC<{ key?: string }> = () => {
       <div className="flex justify-center items-center gap-3">
         <Link
           href={'/suggest'}
-          className="flex justify-center items-center gap-3 text-black px-6 py-4 text-lg bg-white hover:bg-slate-50 transition-colors rounded-full shadow cursor-pointer"
+          className="flex justify-center items-center gap-3 text-black px-6 py-4 lg:text-lg text-sm bg-white hover:bg-slate-50 transition-colors rounded-full shadow cursor-pointer"
         >
           <span>Go To Generate</span>
         </Link>
         <span
           onClick={() => signOut()}
-          className="flex flex-col justify-center items-center gap-1 text-black px-6 py-4 text-lg bg-white hover:bg-slate-50 transition-colors rounded-full shadow cursor-pointer"
+          className="flex flex-col justify-center items-center gap-1 text-black px-6 py-4 lg:text-lg text-sm bg-white hover:bg-slate-50 transition-colors rounded-full shadow cursor-pointer"
         >
           <span>Log Out</span>
         </span>
