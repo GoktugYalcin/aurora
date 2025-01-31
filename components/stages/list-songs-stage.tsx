@@ -16,7 +16,9 @@ import { cn } from '@/lib/utils';
 import { useStageStore } from '@/store/store';
 
 export function ListSongsStage({ songs }: { songs: string[] }) {
-  const { parsedSongs, setParsedSongs } = useStageStore((state) => state);
+  const { parsedSongs, setParsedSongs, setPlaylistName } = useStageStore(
+    (state) => state,
+  );
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -31,8 +33,10 @@ export function ListSongsStage({ songs }: { songs: string[] }) {
 
         if (!res.ok) throw new Error(res.statusText);
 
-        const data: { songs: SpotifyTrack[] } = await res.json();
+        const data: { playlistName: string; songs: SpotifyTrack[] } =
+          await res.json();
         setParsedSongs(data.songs);
+        setPlaylistName(data.playlistName ?? 'Mood List #1');
       } catch (error) {
         const message =
           error instanceof Error ? error.message : 'Please, try again later.';

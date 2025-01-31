@@ -11,10 +11,13 @@ import { toast } from '@/hooks/use-toast';
 
 import { cn } from '@/lib/utils';
 
+import { useStageStore } from '@/store/store';
+
 export const GenerateListButton: React.FC<{ songs: SpotifyTrack[] }> = ({
   songs,
 }) => {
   const [loading, setLoading] = useState(false);
+  const { playlistName } = useStageStore((state) => state);
 
   const handleCreateList = () => {
     setLoading(true);
@@ -27,7 +30,7 @@ export const GenerateListButton: React.FC<{ songs: SpotifyTrack[] }> = ({
         },
         body: JSON.stringify({
           songIds: songs.map((song) => song.id),
-          playlistName: 'Mood List',
+          playlistName: playlistName,
         }),
       })
         .then((res) => res.json())
