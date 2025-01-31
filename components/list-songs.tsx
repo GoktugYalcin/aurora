@@ -56,11 +56,15 @@ export const ListSongs: React.FC<{ songs: SpotifyTrack[] }> = ({ songs }) => {
               <Image
                 src={song.cover}
                 alt={song.name}
-                width={30}
-                height={30}
-                className={
-                  'border-2 border-white hidden group-hover:block -mt-2'
-                }
+                width={35}
+                height={35}
+                className={cn(
+                  'border-2 border-white hidden group-hover:block -mt-2 transition-all',
+                  {
+                    'rotate-12': index % 2 === 0,
+                    '-rotate-12': index % 2 === 1,
+                  },
+                )}
               />
             </motion.div>
           </Link>

@@ -35,11 +35,11 @@ export default function Home() {
           <span className="font-semibold text-xl mb-2">What is it?</span>
           <div
             ref={containerRef}
-            className="flex flex-col justify-start items-start gap-3"
+            className="flex flex-col justify-start text-slate-950 items-start gap-3"
           >
             <VariableFontCursorProximity
               label={`Music has the power to transform emotions, and Aurora helps you find the perfect songs to match your vibe. Whether you're feeling energetic, nostalgic, relaxed, or inspired, Aurora curates a personalized playlist just for you.`}
-              className="leading-tight text-xs sm:text-sm md:text-base lg:text-lg text-primaryRed"
+              className="leading-tight prose text-xs sm:text-sm md:text-base lg:text-lg text-slate-950"
               fromFontVariationSettings="'wght' 400, 'slnt' 0"
               toFontVariationSettings="'wght' 900, 'slnt' -10"
               falloff="exponential"
@@ -49,7 +49,7 @@ export default function Home() {
             <VariableFontCursorProximity
               label={`✨ How it works:`}
               className="leading-tight text-xs sm:text-sm md:text-base lg:text-lg"
-              fromFontVariationSettings="'wght' 400, 'slnt' 0"
+              fromFontVariationSettings="'wght' 600, 'slnt' 0"
               toFontVariationSettings="'wght' 900, 'slnt' -10"
               falloff="exponential"
               radius={70}
@@ -60,7 +60,7 @@ export default function Home() {
               <VariableFontCursorProximity
                 label={`Select Your Mood – Choose from a variety of moods that match your feelings.`}
                 className="leading-tight text-xs sm:text-sm md:text-base lg:text-lg"
-                fromFontVariationSettings="'wght' 400, 'slnt' 0"
+                fromFontVariationSettings="'wght' 500, 'slnt' 0"
                 toFontVariationSettings="'wght' 900, 'slnt' -10"
                 falloff="exponential"
                 radius={70}
@@ -72,7 +72,7 @@ export default function Home() {
               <VariableFontCursorProximity
                 label={`Discover Songs – Let Aurora generate the best songs from Spotify based on your selection.`}
                 className="leading-tight text-xs sm:text-sm md:text-base lg:text-lg"
-                fromFontVariationSettings="'wght' 400, 'slnt' 0"
+                fromFontVariationSettings="'wght' 500, 'slnt' 0"
                 toFontVariationSettings="'wght' 900, 'slnt' -10"
                 falloff="exponential"
                 radius={70}
@@ -84,7 +84,7 @@ export default function Home() {
               <VariableFontCursorProximity
                 label={`Create Playlists – Save your favorite tracks as a playlist directly to your Spotify account.`}
                 className="leading-tight text-xs sm:text-sm md:text-base lg:text-lg"
-                fromFontVariationSettings="'wght' 400, 'slnt' 0"
+                fromFontVariationSettings="'wght' 500, 'slnt' 0"
                 toFontVariationSettings="'wght' 900, 'slnt' -10"
                 falloff="exponential"
                 radius={70}

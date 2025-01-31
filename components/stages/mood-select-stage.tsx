@@ -1,13 +1,19 @@
-import Transition from '../transition';
-import { ArrowRight, RotateCw } from 'lucide-react';
-import VariableFontHoverByLetter from '../variable-font-hover-by-letter';
 import { useRef } from 'react';
+
+import { ArrowRight, RotateCw } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
+
 import { useStageStore } from '@/store/store';
+
+import Transition from '../transition';
+import VariableFontHoverByLetter from '../variable-font-hover-by-letter';
 
 export function MoodSelectStage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { nextStage, moods } = useStageStore((state) => state);
+  const { nextStage, moods, selectedMoods, toggleSelectedMood } = useStageStore(
+    (state) => state,
+  );
 
   return (
     <>
@@ -17,13 +23,14 @@ export function MoodSelectStage() {
       <Transition latency={0.1}>
         <div
           ref={containerRef}
-          className="w-full h-full flex flex-wrap items-center justify-between gap-2 gap-y-3 prose text-left"
+          className="w-full h-full flex flex-wrap justify-between gap-2 gap-y-4 prose text-center select-none"
         >
           {moods.map((text, i) =>
-            text === 'guilty' ? (
+            selectedMoods.includes(text) ? (
               <span
                 key={i}
                 className="text-2xl leading-none font-bold cursor-pointer text-orange-600"
+                onClick={() => toggleSelectedMood(text)}
               >
                 {text}
               </span>
@@ -41,7 +48,7 @@ export function MoodSelectStage() {
                 }}
                 fromFontVariationSettings="'wght' 300, 'slnt' 0"
                 toFontVariationSettings="'wght' 900, 'slnt' -10"
-                onClick={() => console.log(text)}
+                onClick={() => toggleSelectedMood(text)}
               />
             ),
           )}
@@ -51,10 +58,10 @@ export function MoodSelectStage() {
         latency={0.1}
         className="w-screen flex justify-center items-center gap-6"
       >
-        <div className="group flex justify-center items-center gap-2 bg-orange-200 text-orange-500 px-6 py-2 cursor-pointer rounded-full select-none active:font-semibold active:bg-orange-300/90 active:translate-y-0.5 active:transition-all">
+        {/*<div className="group flex justify-center items-center gap-2 bg-orange-200 text-orange-500 px-6 py-2 cursor-pointer rounded-full select-none active:font-semibold active:bg-orange-300/90 active:translate-y-0.5 active:transition-all">
           <span className="text-xl">Reload</span>
           <RotateCw className="w-4 h-4 group-active:animate-spin" />
-        </div>
+        </div>*/}
         <div
           className="group flex justify-center items-center gap-2 bg-orange-200 text-orange-500 px-6 py-2 cursor-pointer rounded-full select-none active:font-semibold active:bg-orange-300/90 active:translate-y-0.5 active:transition-all"
           onClick={() => nextStage()}
