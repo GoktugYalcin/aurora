@@ -21,7 +21,7 @@ Aurora is a Next.js-powered app designed to match your mood with the perfect son
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/aurora.git
+   git clone https://github.com/GoktugYalcin/aurora.git
    cd aurora
    ```
 2. Install dependencies:
