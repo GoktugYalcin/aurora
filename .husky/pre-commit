@@ -1,0 +1,10 @@
+#!/bin/sh
+if ! head -1 "$1" | grep -qiE "^(feat|fix|ci|chore|docs|test|style|refactor|perf|build|revert|merge)(\(.+?\))?: .{1,}$"; then
+    echo "pls type a commit that will be conventional" >&2
+    exit 1
+fi
+
+if ! head -1 "$1" | grep -qE "^.{1,88}$"; then
+    echo "commit message is too long" >&2
+    exit 1
+fi
