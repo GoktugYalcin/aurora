@@ -41,7 +41,7 @@ const AnimatedGradient: React.FC<AnimatedGradientProps> = ({
   return (
     <div
       ref={containerRef}
-      className="absolute transition-colors inset-0 min-h-screen overflow-hidden -z-2 bg-[url(/noise.svg);]"
+      className="fixed transition-colors inset-0 min-h-screen overflow-hidden -z-2 bg-[url(/noise.svg);]"
     >
       <div
         className={cn(
