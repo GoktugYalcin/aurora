@@ -50,7 +50,7 @@ export const ListSongs: React.FC<{ songs: SpotifyTrack[] }> = ({ songs }) => {
                 toFontVariationSettings="'wght' 900, 'slnt' -10"
                 className={cn(
                   'lg:text-2xl leading-none font-[400] cursor-pointer text-ellipsis overflow-hidden',
-                  'text-blue-700 h-[30px]',
+                  'text-blue-700 h-[35px]',
                 )}
               />
               <Image
@@ -59,7 +59,7 @@ export const ListSongs: React.FC<{ songs: SpotifyTrack[] }> = ({ songs }) => {
                 width={35}
                 height={35}
                 className={cn(
-                  'border-2 border-white hidden group-hover:block transition-all',
+                  'border-4 border-white rounded-sm hidden group-hover:block transition-all',
                   {
                     'rotate-12': index % 2 === 0,
                     '-rotate-12': index % 2 === 1,

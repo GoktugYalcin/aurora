@@ -1,5 +1,6 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { SpotifyTrack } from '@/types/spotify';
+import axios from 'axios';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -9,6 +10,24 @@ const SPOTIFY_API_URL = 'https://api.spotify.com/v1/search';
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
+
+  /*console.log(session?.accessToken);*/
+
+  const { data } = await axios.post(
+    'https://accounts.spotify.com/api/token',
+    new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token: session?.refreshToken ?? '',
+    }).toString(),
+    {
+      headers: {
+        Authorization: `Basic ${Buffer.from(
+          `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`,
+        ).toString('base64')}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    },
+  );
 
   if (!session?.accessToken) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -31,7 +50,7 @@ export async function POST(req: NextRequest) {
         `${SPOTIFY_API_URL}?q=${encodeURIComponent(song)}&type=track&limit=1`,
         {
           headers: {
-            Authorization: `Bearer ${session.accessToken}`,
+            Authorization: `Bearer ${data.access_token ?? session.accessToken}`,
           },
         },
       );
@@ -40,7 +59,6 @@ export async function POST(req: NextRequest) {
         const data = await response.json();
         if (data.tracks.items.length > 0) {
           const track = data.tracks.items[0];
-          console.log(track);
           results.push({
             name: track.name,
             id: track.id,

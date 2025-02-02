@@ -21,7 +21,6 @@ export const GenerateListButton: React.FC<{ songs: SpotifyTrack[] }> = ({
 
   const handleCreateList = () => {
     setLoading(true);
-    console.log(songs);
     try {
       fetch('/api/create-playlist', {
         method: 'POST',

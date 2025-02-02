@@ -75,9 +75,7 @@ export const createStageStore = (initState: StageState) => {
     toggleSelectedMood: (mood: string) =>
       set((state) => {
         const moodIsAvailable = state.selectedMoods.includes(mood);
-        console.log({ moodIsAvailable });
         if (moodIsAvailable) {
-          console.log('buradayım');
           return {
             selectedMoods: state.selectedMoods.filter(
               (selectedMood) => selectedMood !== mood,

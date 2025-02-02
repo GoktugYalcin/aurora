@@ -3,17 +3,18 @@ import { NextAuthOptions } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import SpotifyProvider from 'next-auth/providers/spotify';
 
-async function refreshAccessToken(token: JWT): Promise<JWT> {
+export async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
     const basicAuth = Buffer.from(
       `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`,
     ).toString('base64');
+
     const { data } = await axios.post(
       'https://accounts.spotify.com/api/token',
-      {
+      new URLSearchParams({
         grant_type: 'refresh_token',
-        refresh_token: token.refreshToken,
-      },
+        refresh_token: token.refresh_token ?? '',
+      }).toString(),
       {
         headers: {
           Authorization: `Basic ${basicAuth}`,
@@ -21,12 +22,15 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
         },
       },
     );
+
     return {
       ...token,
-      accessToken: data.access_token,
-      accessTokenExpires: Date.now() + data.expires_in * 1000,
+      access_token: data.access_token,
+      expires_at: Date.now() + data.expires_in * 1000,
+      refresh_token: data.refresh_token ?? token.refresh_token, // refresh_token güncellenmişse kaydet
     };
   } catch (error) {
+    console.error('Error refreshing access token:', error);
     return {
       ...token,
       error: 'RefreshTokenError',
@@ -62,8 +66,7 @@ export const authConfig: NextAuthOptions = {
       return newToken;
     },
     async session({ session, token }) {
-      // @ts-ignore
-      session.accessToken = token.accessToken ?? '';
+      session.accessToken = token.access_token ?? '';
       // @ts-ignore
       session.user = token.user;
       session.error = token.error;

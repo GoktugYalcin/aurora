@@ -63,8 +63,6 @@ export async function POST(req: NextRequest) {
       },
     );
 
-    console.log(addSongsResponse);
-
     if (!addSongsResponse.ok) {
       throw new Error('Failed to add songs to playlist');
     }
