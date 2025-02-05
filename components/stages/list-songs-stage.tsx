@@ -1,6 +1,4 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, memo, useEffect, useState } from 'react';
 
 import { SpotifyTrack } from '@/types/spotify';
 
@@ -15,7 +13,7 @@ import { cn } from '@/lib/utils';
 
 import { useStageStore } from '@/store/store';
 
-export function ListSongsStage({ songs }: { songs: string[] }) {
+function ListSongsStageComponent({ songs }: { songs: string[] }) {
   const { parsedSongs, setParsedSongs, setPlaylistName } = useStageStore(
     (state) => state,
   );
@@ -77,3 +75,8 @@ export function ListSongsStage({ songs }: { songs: string[] }) {
     </>
   );
 }
+
+export const ListSongsStage = memo(
+  ListSongsStageComponent,
+  (prevProps, nextProps) => prevProps.songs.length === nextProps.songs.length,
+);

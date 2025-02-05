@@ -114,7 +114,6 @@ export const createStageStore = (initState: StageState) => {
       }),
     setPlaylistProps: (playlist: Playlist) =>
       set((state) => {
-        console.log(playlist);
         return { playlistProps: playlist };
       }),
     reset: () => set(initStageStore),

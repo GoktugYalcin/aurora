@@ -37,14 +37,14 @@ export default function SuggestPage() {
   }, [stage]);
 
   return (
-    <main className="flex flex-col justify-center items-center w-full min-h-screen lg:gap-20 gap-8">
+    <main className="flex flex-col justify-center items-center w-full min-h-screen lg:gap-20 gap-2">
       <AnimatedGradient colors={colorArr} speed={0.12} blur="heavy" />
       <AnimatePresence mode="wait">
         {stage.type === 'selection' && <MoodSelectStage key="selection" />}
-        {stage.type === 'playlist' && <PlaylistStage key="playlist" />}
         {stage.type === 'listing' && (
           <ListSongsStage songs={songs} key="listing" />
         )}
+        {stage.type === 'playlist' && <PlaylistStage key="playlist" />}
       </AnimatePresence>
     </main>
   );

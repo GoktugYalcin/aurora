@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
 import { motion, stagger, useAnimate } from 'motion/react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import Floating, { FloatingElement } from '@/components/parallax-floating';
@@ -21,38 +22,52 @@ export function PlaylistStage() {
     );
   }, []);
 
-  console.log({ playlistProps });
-
   return (
     <>
       <Transition latency={0.1} className="fixed left-0 top-0 w-full h-[100vh]">
         <Transition
-          className="flex w-full h-full justify-center items-center bg-black overflow-hidden"
+          className="flex flex-col w-full h-full justify-center items-center bg-black overflow-hidden"
           ref={scope}
         >
           {playlistProps && (
-            <motion.div
-              className="z-50 text-center space-y-4 items-center flex flex-col lg:bg-gray-600/20 bg-gray-600/80 lg:px-10 lg:py-10 p-5 rounded-2xl"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.88, delay: 1.5 }}
-            >
-              <motion.img
-                initial={{ opacity: 0 }}
-                src={playlistProps?.playlistImage}
-                className="lg:w-30 lg:h-30 w-28 h-28 object-cover duration-200 rounded-lg"
-              />
-              <p className="text-2xl md:text-4xl z-50 text-white font-[Outfit] select-none">
-                {playlistProps?.playlistName}
-              </p>
-              <Link
-                href={playlistProps?.playlistUrl}
-                target={'_blank'}
-                className="text-xs z-50 hover:scale-110 transition-transform bg-white text-black rounded-full py-2 w-20 cursor-pointer"
+            <>
+              <motion.div
+                className="z-50 text-center space-y-4 items-center flex flex-col text-white font-bold text-2xl mb-10"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.88, delay: 1.5 }}
               >
-                Go to list
-              </Link>
-            </motion.div>
+                There you are, Your playlist is ready to listen!
+              </motion.div>
+              <motion.div
+                className="z-50 text-center space-y-4 items-center flex flex-col lg:bg-gray-600/20 bg-gray-600 lg:px-10 lg:py-10 p-5 rounded-2xl"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.88, delay: 1.5 }}
+              >
+                <motion.img
+                  initial={{ opacity: 0 }}
+                  src={playlistProps?.playlistImage}
+                  className="lg:w-30 lg:h-30 w-28 h-28 object-cover duration-200 rounded-lg"
+                />
+                <p className="text-2xl md:text-4xl z-50 text-white font-[Outfit] select-none">
+                  {playlistProps?.playlistName}
+                </p>
+                <Link
+                  href={playlistProps?.playlistUrl}
+                  target={'_blank'}
+                  className="flex justify-center items-center gap-2 text-sm z-50 hover:scale-110 transition-transform text-black rounded-full bg-[#1DB954] py-2 px-3 cursor-pointer"
+                >
+                  <Image
+                    src={'/spotify.svg'}
+                    alt="spotify"
+                    width={20}
+                    height={20}
+                  />
+                  <span>Go to list</span>
+                </Link>
+              </motion.div>
+            </>
           )}
 
           <Floating
