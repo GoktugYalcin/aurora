@@ -78,5 +78,5 @@ function ListSongsStageComponent({ songs }: { songs: string[] }) {
 
 export const ListSongsStage = memo(
   ListSongsStageComponent,
-  (prevProps, nextProps) => prevProps.songs.length === nextProps.songs.length,
+  (prevProps, nextProps) => prevProps.songs?.length === nextProps.songs?.length,
 );
