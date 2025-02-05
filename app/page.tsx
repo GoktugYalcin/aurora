@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import dynamic from 'next/dynamic';
 
@@ -9,6 +9,8 @@ import { AuthenticationStage } from '@/components/stages/authentication-stage';
 import { SparklesText } from '@/components/sparkles-text';
 import VariableFontCursorProximity from '@/components/variable-font-cursor-proximity';
 
+import { useStageStore } from '@/store/store';
+
 const AnimatedGradient = dynamic(
   () => import('../components/animated-gradient-with-svg'),
   { ssr: false },
@@ -16,6 +18,10 @@ const AnimatedGradient = dynamic(
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { reset } = useStageStore((state) => state);
+  useEffect(() => {
+    reset();
+  }, []);
   if (!containerRef) {
     return <></>;
   }

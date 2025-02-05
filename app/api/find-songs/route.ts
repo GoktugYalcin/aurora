@@ -11,8 +11,6 @@ const SPOTIFY_API_URL = 'https://api.spotify.com/v1/search';
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
-  /*console.log(session?.accessToken);*/
-
   const { data } = await axios.post(
     'https://accounts.spotify.com/api/token',
     new URLSearchParams({

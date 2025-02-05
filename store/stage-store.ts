@@ -10,6 +10,15 @@ export type Stage = {
   colorName: string;
 };
 
+export type Playlist = {
+  playlistId: string;
+  playlistName: string;
+  playlistDescription: string;
+  totalTracks: string;
+  playlistImage: string;
+  playlistUrl: string;
+};
+
 export type StageState = {
   stage: Stage;
   moods: string[];
@@ -17,14 +26,17 @@ export type StageState = {
   songs: string[];
   parsedSongs: SpotifyTrack[];
   playlistName: string;
+  playlistProps?: Playlist;
 };
 
 export type StageActions = {
   nextStage: () => void;
   prevStage: () => void;
+  reset: () => void;
   setPlaylistName: (name: string) => void;
   setParsedSongs: (songs: SpotifyTrack[]) => void;
   toggleSelectedMood: (mood: string) => void;
+  setPlaylistProps: (playlist: Playlist) => void;
 };
 
 export type StageStore = StageState & StageActions;
@@ -39,6 +51,11 @@ const stages: Stage[] = [
     type: 'listing',
     colors: ['#61A9FF', '#7AB2FA', '#85B7FF'],
     colorName: 'blue',
+  },
+  {
+    type: 'playlist',
+    colors: ['#4DBF88', '#66B874', '#70BE7D'],
+    colorName: 'green',
   },
 ];
 
@@ -95,5 +112,11 @@ export const createStageStore = (initState: StageState) => {
       set((state) => {
         return { playlistName: name };
       }),
+    setPlaylistProps: (playlist: Playlist) =>
+      set((state) => {
+        console.log(playlist);
+        return { playlistProps: playlist };
+      }),
+    reset: () => set(initStageStore),
   }));
 };

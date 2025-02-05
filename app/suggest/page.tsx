@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 
 import { ListSongsStage } from '@/components/stages/list-songs-stage';
 import { MoodSelectStage } from '@/components/stages/mood-select-stage';
+import { PlaylistStage } from '@/components/stages/playlist-stage';
 
 import { useStageStore } from '@/store/store';
 
@@ -40,6 +41,7 @@ export default function SuggestPage() {
       <AnimatedGradient colors={colorArr} speed={0.12} blur="heavy" />
       <AnimatePresence mode="wait">
         {stage.type === 'selection' && <MoodSelectStage key="selection" />}
+        {stage.type === 'playlist' && <PlaylistStage key="playlist" />}
         {stage.type === 'listing' && (
           <ListSongsStage songs={songs} key="listing" />
         )}

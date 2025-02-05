@@ -2,12 +2,10 @@ import React from 'react';
 
 import type { Metadata } from 'next';
 import { Space_Grotesk } from 'next/font/google';
-import Link from 'next/link';
 
 import { AppName } from '@/components/app-name';
 import { Footer } from '@/components/footer';
 import { Toaster } from '@/components/toaster';
-import Transition from '@/components/transition';
 import { WrappedSession } from '@/components/wrapped-session';
 
 import { StageStoreProvider } from '@/store/store';

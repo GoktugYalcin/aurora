@@ -11,13 +11,16 @@ import { toast } from '@/hooks/use-toast';
 
 import { cn } from '@/lib/utils';
 
+import { Playlist } from '@/store/stage-store';
 import { useStageStore } from '@/store/store';
 
 export const GenerateListButton: React.FC<{ songs: SpotifyTrack[] }> = ({
   songs,
 }) => {
   const [loading, setLoading] = useState(false);
-  const { playlistName } = useStageStore((state) => state);
+  const { playlistName, nextStage, setPlaylistProps } = useStageStore(
+    (state) => state,
+  );
 
   const handleCreateList = () => {
     setLoading(true);
@@ -33,8 +36,13 @@ export const GenerateListButton: React.FC<{ songs: SpotifyTrack[] }> = ({
         }),
       })
         .then((res) => res.json())
-        .then((res) => console.log(res))
-        .finally(() => setLoading(false));
+        .then((res) => {
+          setPlaylistProps(res as Playlist);
+          nextStage();
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     } catch (err) {
       setLoading(false);
       toast({
