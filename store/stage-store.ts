@@ -136,10 +136,10 @@ export const createStageStore = (initState: StageState) => {
     getSongs: async (songs: string[]) =>
       set((state) => {
         try {
-          const res = fetch('/api/find-songs', {
+          fetch('/api/find-songs', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ songs }),
+            body: JSON.stringify({ songs, listName: state.playlistName }),
           })
             .then((res) => {
               if (!res.ok) {
@@ -150,8 +150,6 @@ export const createStageStore = (initState: StageState) => {
             })
             .then((dat) => {
               const data: { playlistName: string; songs: SpotifyTrack[] } = dat;
-
-              console.log(data);
 
               state.setParsedSongs(data.songs);
               state.setPlaylistName(state.playlistName ?? 'Mood List #1');

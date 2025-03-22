@@ -28,7 +28,9 @@ export async function POST(req: NextRequest) {
     .eq('spotify_email', session.user.email)
     .single();
 
-  if (supabase_error || user_data?.generated_this_month > 4) {
+  if (supabase_error) {
+    return NextResponse.json({ error: 'An error occured.' }, { status: 401 });
+  } else if (user_data?.generated_this_month > 4) {
     return NextResponse.json({ error: 'An error occured.' }, { status: 401 });
   }
 
@@ -53,7 +55,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { songs } = await req.json();
+    const { songs, listName } = await req.json();
 
     if (!songs || !Array.isArray(songs)) {
       return NextResponse.json(
@@ -92,43 +94,16 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    /*const { error: generate_list_error } = await supabase
+    const { error: generate_list_error } = await supabase
       .from('tbl_generated_lists')
-      .insert([{ user_id: session.user.email, songs: songIds }])
+      .insert([
+        { user_id: session.user.email, songs: songIds, list_name: listName },
+      ])
       .select();
 
     if (generate_list_error) {
       return NextResponse.json({ error: generate_list_error }, { status: 500 });
     }
-
-    if (count) {
-      const { error: update_error } = await supabase
-        .from('tbl_users')
-        .update({ generated_this_month: user_data.generated_this_month + 1 })
-        .eq('spotify_email', session.user.email)
-        .select();
-
-      if (update_error) {
-        return NextResponse.json(
-          { error: 'Writing to database error' },
-          { status: 500 },
-        );
-      }
-    } else {
-      const { error: create_error } = await supabase
-        .from('tbl_users')
-        .insert([
-          { spotify_email: session.user.email, generated_this_month: 0 },
-        ])
-        .select();
-
-      if (create_error) {
-        return NextResponse.json(
-          { error: 'Writing to database error' },
-          { status: 500 },
-        );
-      }
-    }*/
 
     return NextResponse.json(
       { songs: results as SpotifyTrack[] },

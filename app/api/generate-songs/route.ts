@@ -2,8 +2,6 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
-import { zodResponseFormat } from 'openai/helpers/zod';
-import { z } from 'zod';
 
 import { createClient } from '@/lib/supabase/server';
 
@@ -36,7 +34,7 @@ export async function POST(req: NextRequest) {
   if (supabase_error) {
     return NextResponse.json({ error: 'An error occured.' }, { status: 500 });
   } else if (!user_data) {
-    const { error: create_error } = await supabase
+    const { error: create_error, data: create_data } = await supabase
       .from('tbl_users')
       .insert([{ spotify_email: session.user.email, generated_this_month: 0 }])
       .select();
@@ -52,19 +50,27 @@ export async function POST(req: NextRequest) {
       { error: 'Monthly limit exceeded.' },
       { status: 500 },
     );
+  } else {
+    const { error: update_error } = await supabase
+      .from('tbl_users')
+      .update({
+        generated_this_month: parseInt(user_data.generated_this_month) + 1,
+      })
+      .eq('spotify_email', session.user.email)
+      .select();
+
+    if (update_error) {
+      return NextResponse.json({ error: 'An error occured.' }, { status: 500 });
+    }
   }
 
   try {
-    const generationObject = z.object({
-      listName: z.string(),
-      songs: z.array(z.string()),
-    });
     const completion = await aiClient.chat.completions.create({
       model: 'gpt-4',
       messages: [
         {
           role: 'user',
-          content: `[${moods}] Based on these moods, generate a JSON object with 10 harmonizing song suggestions. Format: {listName: "[generated name]", songs:["[artist] - [song]"]}. Return raw JSON.`,
+          content: `[${moods}] I have this moods on my stash. Use this stash and give me one list and this list have exactly have 10 music suggestion to live the mood. Songs need to harmony with the mood. Just give the list as {listName: "[generate list name based on this selections]", songs:["artist name - song name"]}(any other props will not be accept obey the rule.) format result will be raw json`,
         },
       ],
     });

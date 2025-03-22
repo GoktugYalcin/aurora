@@ -22,8 +22,6 @@ export const GenerateListButton: React.FC<{ songs: SpotifyTrack[] }> = ({
     (state) => state,
   );
 
-  console.log();
-
   const handleCreateList = () => {
     setLoading(true);
     try {
