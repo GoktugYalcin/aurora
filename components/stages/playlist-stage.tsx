@@ -37,10 +37,10 @@ export function PlaylistStage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.88, delay: 1.5 }}
               >
-                There you are, Your playlist is ready to listen!
+                There you are, your playlist is ready to listen!
               </motion.div>
               <motion.div
-                className="z-50 text-center space-y-4 items-center flex flex-col lg:bg-gray-600/20 bg-gray-600 lg:px-10 lg:py-10 p-5 rounded-2xl"
+                className="z-50 text-center space-y-4 items-center flex flex-col lg:bg-gray-600/40 text-wrap w-1/4 bg-gray-600 lg:px-10 lg:py-10 p-5 rounded-2xl"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.88, delay: 1.5 }}
@@ -50,7 +50,7 @@ export function PlaylistStage() {
                   src={playlistProps?.playlistImage}
                   className="lg:w-30 lg:h-30 w-28 h-28 object-cover duration-200 rounded-lg"
                 />
-                <p className="text-2xl md:text-4xl z-50 text-white font-[Outfit] select-none">
+                <p className="text-2xl md:text-4xl z-50 text-white font-[Outfit] select-none pb-4">
                   {playlistProps?.playlistName}
                 </p>
                 <Link

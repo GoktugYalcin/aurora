@@ -4,12 +4,33 @@ import axios from 'axios';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { createClient } from '@/lib/supabase/server';
+
 export const dynamic = 'force-dynamic';
 
 const SPOTIFY_API_URL = 'https://api.spotify.com/v1/search';
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
+  const supabase = await createClient();
+
+  if (!session?.user?.email) {
+    return NextResponse.json({ error: 'An error occured.' }, { status: 401 });
+  }
+
+  let {
+    data: user_data,
+    error: supabase_error,
+    count,
+  } = await supabase
+    .from('tbl_users')
+    .select('*')
+    .eq('spotify_email', session.user.email)
+    .single();
+
+  if (supabase_error || user_data?.generated_this_month > 4) {
+    return NextResponse.json({ error: 'An error occured.' }, { status: 401 });
+  }
 
   const { data } = await axios.post(
     'https://accounts.spotify.com/api/token',
@@ -42,6 +63,7 @@ export async function POST(req: NextRequest) {
     }
 
     const results = [];
+    const songIds = [];
 
     for (const song of songs) {
       const response = await fetch(
@@ -57,6 +79,7 @@ export async function POST(req: NextRequest) {
         const data = await response.json();
         if (data.tracks.items.length > 0) {
           const track = data.tracks.items[0];
+          songIds.push(track.id);
           results.push({
             name: track.name,
             id: track.id,
@@ -68,6 +91,44 @@ export async function POST(req: NextRequest) {
         }
       }
     }
+
+    /*const { error: generate_list_error } = await supabase
+      .from('tbl_generated_lists')
+      .insert([{ user_id: session.user.email, songs: songIds }])
+      .select();
+
+    if (generate_list_error) {
+      return NextResponse.json({ error: generate_list_error }, { status: 500 });
+    }
+
+    if (count) {
+      const { error: update_error } = await supabase
+        .from('tbl_users')
+        .update({ generated_this_month: user_data.generated_this_month + 1 })
+        .eq('spotify_email', session.user.email)
+        .select();
+
+      if (update_error) {
+        return NextResponse.json(
+          { error: 'Writing to database error' },
+          { status: 500 },
+        );
+      }
+    } else {
+      const { error: create_error } = await supabase
+        .from('tbl_users')
+        .insert([
+          { spotify_email: session.user.email, generated_this_month: 0 },
+        ])
+        .select();
+
+      if (create_error) {
+        return NextResponse.json(
+          { error: 'Writing to database error' },
+          { status: 500 },
+        );
+      }
+    }*/
 
     return NextResponse.json(
       { songs: results as SpotifyTrack[] },

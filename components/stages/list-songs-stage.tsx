@@ -1,57 +1,15 @@
-import React, { forwardRef, memo, useEffect, useState } from 'react';
-
-import { SpotifyTrack } from '@/types/spotify';
+import React, { memo } from 'react';
 
 import { GenerateListButton } from '@/components/generate-list-button';
-import { ListSongs } from '@/components/list-songs';
-import { ListSongsSkeleton } from '@/components/list-songs-skeleton';
+import { ListSongsWrapper } from '@/components/list-songs-wrapper';
 import Transition from '@/components/transition';
-
-import { toast } from '@/hooks/use-toast';
 
 import { cn } from '@/lib/utils';
 
 import { useStageStore } from '@/store/store';
 
-function ListSongsStageComponent({ songs }: { songs: string[] }) {
-  const { parsedSongs, setParsedSongs, setPlaylistName } = useStageStore(
-    (state) => state,
-  );
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    const fetchSongs = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch('/api/find-songs', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ songs: songs }),
-        });
-
-        if (!res.ok) throw new Error(res.statusText);
-
-        const data: { playlistName: string; songs: SpotifyTrack[] } =
-          await res.json();
-        setParsedSongs(data.songs);
-        setPlaylistName(data.playlistName ?? 'Mood List #1');
-      } catch (error) {
-        const message =
-          error instanceof Error ? error.message : 'Please, try again later.';
-        toast({
-          variant: 'destructive',
-          title: 'Uh oh! Something went wrong.',
-          description: `There was a problem with your request: ${message ?? 'Please, try again later.'}`,
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (songs.length > 0) {
-      fetchSongs();
-    }
-  }, []);
+function ListSongsStageComponent() {
+  const { parsedSongs } = useStageStore((state) => state);
 
   return (
     <>
@@ -65,18 +23,11 @@ function ListSongsStageComponent({ songs }: { songs: string[] }) {
         There it is! We select the songs for your mood:
       </Transition>
 
-      {loading || !parsedSongs?.length ? (
-        <ListSongsSkeleton />
-      ) : (
-        <ListSongs songs={parsedSongs} />
-      )}
+      <ListSongsWrapper isLoading={!parsedSongs?.length} />
 
-      {parsedSongs.length > 0 && <GenerateListButton songs={parsedSongs} />}
+      <GenerateListButton songs={parsedSongs} />
     </>
   );
 }
 
-export const ListSongsStage = memo(
-  ListSongsStageComponent,
-  (prevProps, nextProps) => prevProps.songs?.length === nextProps.songs?.length,
-);
+export const ListSongsStage = memo(ListSongsStageComponent);

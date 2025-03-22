@@ -19,7 +19,7 @@ const AnimatedGradient = dynamic(
 );
 
 export default function SuggestPage() {
-  const { stage, songs } = useStageStore((state) => state);
+  const { stage, songs, getSongs } = useStageStore((state) => state);
   const [colorArr, setColor] = useState<string[]>(stage.colors);
   const { status } = useSession();
   const router = useRouter();
@@ -41,9 +41,7 @@ export default function SuggestPage() {
       <AnimatedGradient colors={colorArr} speed={0.12} blur="heavy" />
       <AnimatePresence mode="wait">
         {stage.type === 'selection' && <MoodSelectStage key="selection" />}
-        {stage.type === 'listing' && (
-          <ListSongsStage songs={songs} key="listing" />
-        )}
+        {stage.type === 'listing' && <ListSongsStage key="listing" />}
         {stage.type === 'playlist' && <PlaylistStage key="playlist" />}
       </AnimatePresence>
     </main>

@@ -1,6 +1,8 @@
 import { SpotifyTrack } from '@/types/spotify';
 import { createStore } from 'zustand/vanilla';
 
+import { toast } from '@/hooks/use-toast';
+
 import { constMoods } from '@/lib/constMoods';
 import { constSongs } from '@/lib/constSongs';
 
@@ -27,6 +29,7 @@ export type StageState = {
   parsedSongs: SpotifyTrack[];
   playlistName: string;
   playlistProps?: Playlist;
+  generatedCount: number;
 };
 
 export type StageActions = {
@@ -34,9 +37,13 @@ export type StageActions = {
   prevStage: () => void;
   reset: () => void;
   setPlaylistName: (name: string) => void;
+  setSongs: (songs: string[]) => void;
   setParsedSongs: (songs: SpotifyTrack[]) => void;
   toggleSelectedMood: (mood: string) => void;
   setPlaylistProps: (playlist: Playlist) => void;
+  setGeneratedCount: (count: number) => void;
+  getSongs: (songs: string[]) => void;
+  generateSongs: (moods: string[]) => void;
 };
 
 export type StageStore = StageState & StageActions;
@@ -64,9 +71,10 @@ export const initStageStore = (): StageState => {
     stage: stages[0],
     moods: constMoods ?? [],
     selectedMoods: [],
-    songs: constSongs ?? [],
+    songs: [],
     parsedSongs: [],
     playlistName: '',
+    generatedCount: 0,
   };
 };
 
@@ -117,5 +125,65 @@ export const createStageStore = (initState: StageState) => {
         return { playlistProps: playlist };
       }),
     reset: () => set(initStageStore),
+    setGeneratedCount: (count: number) =>
+      set((state) => {
+        return { generatedCount: count };
+      }),
+    setSongs: (songs: string[]) =>
+      set((state) => {
+        return { songs };
+      }),
+    getSongs: async (songs: string[]) =>
+      set((state) => {
+        try {
+          const res = fetch('/api/find-songs', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ songs }),
+          })
+            .then((res) => {
+              if (!res.ok) {
+                throw new Error(res.statusText);
+              } else {
+                return res.json();
+              }
+            })
+            .then((dat) => {
+              const data: { playlistName: string; songs: SpotifyTrack[] } = dat;
+
+              console.log(data);
+
+              state.setParsedSongs(data.songs);
+              state.setPlaylistName(state.playlistName ?? 'Mood List #1');
+            });
+        } catch (error) {
+          const message =
+            error instanceof Error ? error.message : 'Please, try again later.';
+          toast({
+            variant: 'destructive',
+            title: 'Uh oh! Something went wrong.',
+            description: `There was a problem with your request: ${message ?? 'Please, try again later.'}`,
+          });
+        }
+        return { ...state };
+      }),
+    generateSongs: async (moods: string[]) => {
+      set((state) => {
+        fetch('/api/generate-songs', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ moods }),
+        })
+          .then((res) => res.json())
+          .then((dat) => {
+            const data = JSON.parse(dat.data);
+
+            state.setPlaylistName(data.listName);
+            state.setSongs(data.songs);
+            state.getSongs(data.songs);
+          });
+        return { ...state };
+      });
+    },
   }));
 };

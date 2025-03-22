@@ -1,24 +1,44 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-import { ArrowRight, RotateCw } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 import { ListMoods } from '@/components/list-moods';
-
-import { cn } from '@/lib/utils';
+import { MessageBox } from '@/components/message-box';
 
 import { useStageStore } from '@/store/store';
 
 import Transition from '../transition';
-import VariableFontHoverByLetter from '../variable-font-hover-by-letter';
 
 export function MoodSelectStage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { nextStage, moods, selectedMoods, toggleSelectedMood } = useStageStore(
-    (state) => state,
-  );
+  const {
+    nextStage,
+    generatedCount,
+    setGeneratedCount,
+    generateSongs,
+    selectedMoods,
+  } = useStageStore((state) => state);
+
+  useEffect(() => {
+    fetch('/api/check-generate-count', {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setGeneratedCount(res.data.generated_this_month);
+      });
+  }, []);
 
   return (
     <>
+      {generatedCount >= 5 && (
+        <MessageBox
+          title={'Warning'}
+          message={
+            'You have reached monthly limit as 5, please try again on next month :('
+          }
+        />
+      )}
       <Transition
         latency={0.1}
         className="lg:text-4xl text-xl font-bold text-orange-700 lg:px-0 lg:mt-0 mt-12 px-8 text-center"
@@ -43,7 +63,10 @@ export function MoodSelectStage() {
         </div>*/}
         <div
           className="group flex justify-center items-center gap-2 bg-orange-200 text-orange-500 px-6 py-2 cursor-pointer rounded-full select-none active:font-semibold active:bg-orange-300/90 active:translate-y-0.5 active:transition-all"
-          onClick={() => nextStage()}
+          onClick={() => {
+            generateSongs(selectedMoods);
+            nextStage();
+          }}
         >
           <span className="text-xl">Next</span>
           <ArrowRight className="w-4 h-4 group-hover:animate-bounce transition-all" />
