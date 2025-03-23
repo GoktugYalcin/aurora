@@ -63,7 +63,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'An error occured.' }, { status: 500 });
     }
   }
-
   try {
     const completion = await aiClient.chat.completions.create({
       model: 'gpt-4',
@@ -76,7 +75,6 @@ export async function POST(req: NextRequest) {
     });
 
     const aiResult = completion.choices[0].message.content;
-
     return NextResponse.json({ data: aiResult }, { status: 200 });
   } catch (e) {
     return NextResponse.json(

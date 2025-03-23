@@ -7,7 +7,11 @@ import { cn } from '@/lib/utils';
 
 import { useStageStore } from '@/store/store';
 
-const outfit = Outfit({ weight: ['600', '700', '800'] });
+const outfit = Outfit({
+  weight: ['600', '700', '800'],
+  preload: false,
+  subsets: ['latin'],
+});
 
 export function AppName() {
   const { stage } = useStageStore((stage) => stage);
